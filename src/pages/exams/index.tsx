@@ -1,5 +1,4 @@
 import { useState } from "react"
-
 import { useNavigate } from "react-router-dom"
 
 import { ExamsHeader } from "./components/exams-header"
@@ -7,8 +6,10 @@ import { ExamsList } from "./components/exams-list"
 import { useExams } from "./hooks/use-exams"
 
 export default function ExamsPage() {
-  const [selectedSubject, setSelectedSubject] = useState<string>()
-  const { data, isLoading, error } = useExams(selectedSubject)
+  const [selectedSubjectId, setSelectedSubjectId] =
+    useState<string>()
+
+  const { data, isLoading, error } = useExams(selectedSubjectId)
   const navigate = useNavigate()
 
   if (isLoading) {
@@ -27,7 +28,10 @@ export default function ExamsPage() {
     )
   }
 
-  const activeSubject = selectedSubject ?? data.subject
+  const activeSubject =
+    data.subjects.find(
+      (subject) => subject.id === selectedSubjectId
+    ) ?? data.subject
 
   return (
     <div className="space-y-6 p-6">
@@ -36,7 +40,7 @@ export default function ExamsPage() {
         program={data.program}
         semester={data.semester}
         subjects={data.subjects}
-        onSubjectChange={setSelectedSubject}
+        onSubjectChange={setSelectedSubjectId}
       />
 
       <ExamsList

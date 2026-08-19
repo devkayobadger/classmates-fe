@@ -11,6 +11,14 @@ export function ExamsList({
   exams,
   onEnterMarks,
 }: ExamsListProps) {
+  if (exams.length === 0) {
+    return (
+      <div className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+        No exams have been created for this subject yet.
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
       {exams.map((exam) => (

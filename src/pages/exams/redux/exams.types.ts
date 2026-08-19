@@ -16,20 +16,26 @@ export interface Exam {
    type: ExamType
    totalMarks: number
    status: ExamStatus
-   examDate: string
+   examDate: string | null
    dateLabel: string
    studentCount: number
    enteredCount: number
  }
 
-export interface ExamsOverview {
-  subject: string
-  program: string
-  semester: string
-  subjects: string[]
-  exams: Exam[]
+export interface ExamSubject {
+  id: string
+  name: string
+  semester: number
+  program: string | null
 }
 
+export interface ExamsOverview {
+  subject: ExamSubject | null
+  program: string
+  semester: string
+  subjects: ExamSubject[]
+  exams: Exam[]
+}
 export type ExamAvatarColor =
   | "violet"
   | "blue"

@@ -1,4 +1,5 @@
 import { BookOpen } from "lucide-react"
+import type { ExamSubject } from "../redux/exams.types"
 
 import {
   Select,
@@ -9,11 +10,11 @@ import {
 } from "@/components/ui/select"
 
 interface ExamsHeaderProps {
-  subject: string
+  subject: ExamSubject | null
   program: string
   semester: string
-  subjects: string[]
-  onSubjectChange: (value: string) => void
+  subjects: ExamSubject[]
+  onSubjectChange: (subjectId: string) => void
 }
 
 export function ExamsHeader({
@@ -26,14 +27,19 @@ export function ExamsHeader({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Exams</h1>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Exams
+        </h1>
 
         <p className="text-sm text-muted-foreground">
-          {subject} · {program} · {semester}
+          {subject?.name} · {program} · {semester}
         </p>
       </div>
 
-      <Select value={subject} onValueChange={onSubjectChange}>
+      <Select
+        value={subject?.id}
+        onValueChange={onSubjectChange}
+      >
         <SelectTrigger className="w-full sm:w-50">
           <BookOpen className="h-4 w-4 text-muted-foreground" />
 
@@ -41,9 +47,12 @@ export function ExamsHeader({
         </SelectTrigger>
 
         <SelectContent>
-          {subjects.map((item) => (
-            <SelectItem key={item} value={item}>
-              {item}
+          {subjects.map((subject) => (
+            <SelectItem
+              key={subject.id}
+              value={subject.id}
+            >
+              {subject.name}
             </SelectItem>
           ))}
         </SelectContent>
