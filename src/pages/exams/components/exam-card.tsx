@@ -4,8 +4,8 @@ import {
   FlaskConical,
 } from "lucide-react"
 
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 
 import type {
   Exam,
@@ -47,7 +47,6 @@ export function ExamCard({
   return (
     <Card>
       <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        {/* Exam information */}
         <div className="flex items-center gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
             <Icon className="h-5 w-5" />
@@ -71,7 +70,6 @@ export function ExamCard({
           </div>
         </div>
 
-        {/* Progress + Enter marks */}
         <div className="flex items-center gap-4 sm:min-w-55">
           <ExamProgress
             entered={exam.enteredCount}
@@ -81,9 +79,7 @@ export function ExamCard({
           <button
             type="button"
             className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-xs hover:bg-primary/90"
-            onClick={() =>
-              onEnterMarks?.(exam.id)
-            }
+            onClick={() => onEnterMarks?.(exam.id)}
           >
             Enter marks
           </button>

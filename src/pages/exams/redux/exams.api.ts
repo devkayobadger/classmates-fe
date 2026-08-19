@@ -17,12 +17,29 @@ const AVATAR_COLORS: ExamAvatarColor[] = [
   "amber",
 ]
 
+const EXAM_ORDER: Record<ExamType, number> = {
+  "unit-test": 1,
+  "mid-term": 2,
+  "pre-board": 3,
+  practical: 4,
+}
+
+const EXAM_TITLES: Record<ExamType, string> = {
+  "unit-test": "Unit Test",
+  "mid-term": "Mid Term",
+  "pre-board": "Pre Board",
+  practical: "Practical",
+}
+
 function colorForIndex(index: number): ExamAvatarColor {
   return AVATAR_COLORS[index % AVATAR_COLORS.length]
 }
 
+function formatExamDateLabel(examDate: string | null): string {
+  if (!examDate) {
+    return "Date not set"
+  }
 
-function formatExamDateLabel(examDate: string): string {
   const date = new Date(`${examDate}T00:00:00`)
 
   const formatted = date.toLocaleDateString("en-US", {
@@ -30,7 +47,10 @@ function formatExamDateLabel(examDate: string): string {
     month: "long",
   })
 
-  const isPast = date.getTime() < new Date().setHours(0, 0, 0, 0)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const isPast = date.getTime() < today.getTime()
 
   return isPast ? `Held ${formatted}` : `Scheduled ${formatted}`
 }
@@ -48,7 +68,7 @@ interface BackendExam {
   type: ExamType
   title: string
   totalMarks: number
-  examDate: string
+  examDate: string | null
   createdAt: string
   updatedAt: string
   studentCount: number
@@ -69,7 +89,7 @@ interface BackendExamMarks {
   title: string
   type: ExamType
   totalMarks: number
-  examDate: string
+  examDate: string | null
   subject: string
   program: string
   semester: string
@@ -79,11 +99,13 @@ interface BackendExamMarks {
 
 async function fetchSubjects(): Promise<BackendSubject[]> {
   const { data } = await axiosInstance.get<BackendSubject[]>("subjects")
+
   return data
 }
 
 async function fetchExams(): Promise<BackendExam[]> {
   const { data } = await axiosInstance.get<BackendExam[]>("exams")
+
   return data
 }
 
@@ -103,7 +125,7 @@ function toExam(exam: BackendExam): Exam {
 }
 
 export async function fetchExamsOverview(
-  subjectName?: string
+  subjectId?: string
 ): Promise<ExamsOverview> {
   const [subjects, exams] = await Promise.all([
     fetchSubjects(),
@@ -111,29 +133,44 @@ export async function fetchExamsOverview(
   ])
 
   if (subjects.length === 0) {
-    return { subject: "", program: "", semester: "", subjects: [], exams: [] }
+    return {
+      subject: null,
+      program: "",
+      semester: "",
+      subjects: [],
+      exams: [],
+    }
   }
 
-  const subjectsWithExams = new Set(exams.map((exam) => exam.subjectId))
-
   const activeSubject =
-    subjects.find((subject) => subject.name === subjectName) ??
-    subjects.find((subject) => subjectsWithExams.has(subject.id)) ??
+    subjects.find((subject) => subject.id === subjectId) ??
     subjects[0]
 
   const examsForSubject = exams
     .filter((exam) => exam.subjectId === activeSubject.id)
-    .map(toExam)
+    .sort(
+      (a, b) =>
+        EXAM_ORDER[a.type] - EXAM_ORDER[b.type]
+    )
 
   return {
-    subject: activeSubject.name,
+    subject: {
+      id: activeSubject.id,
+      name: activeSubject.name,
+      semester: activeSubject.semester,
+      program: activeSubject.program,
+    },
     program: activeSubject.program ?? "",
     semester: `Semester ${activeSubject.semester}`,
-    subjects: subjects.map((subject) => subject.name),
-    exams: examsForSubject,
+    subjects: subjects.map((subject) => ({
+      id: subject.id,
+      name: subject.name,
+      semester: subject.semester,
+      program: subject.program,
+    })),
+    exams: examsForSubject.map(toExam),
   }
 }
-
 
 export async function fetchExamMarks(
   examId: string
@@ -142,15 +179,17 @@ export async function fetchExamMarks(
     `exams/${examId}/marks`
   )
 
-  const students: ExamStudentMark[] = data.students.map((student, index) => ({
-    id: student.id,
-    name: student.name,
-    studentCode: student.studentCode ?? undefined,
-    rollNumber: student.rollNumber,
-    marks: student.marks,
-    index: index + 1,
-    avatarColor: colorForIndex(index),
-  }))
+  const students: ExamStudentMark[] = data.students.map(
+    (student, index) => ({
+      id: student.id,
+      name: student.name,
+      studentCode: student.studentCode ?? undefined,
+      rollNumber: student.rollNumber,
+      marks: student.marks,
+      index: index + 1,
+      avatarColor: colorForIndex(index),
+    })
+  )
 
   return {
     examId: data.id,
@@ -167,7 +206,12 @@ export async function fetchExamMarks(
 
 export async function saveExamMarks(
   examId: string,
-  marks: Array<{ studentId: string; marks: number | null }>
+  marks: Array<{
+    studentId: string
+    marks: number | null
+  }>
 ): Promise<void> {
-  await axiosInstance.put(`exams/${examId}/marks`, { marks })
+  await axiosInstance.put(`exams/${examId}/marks`, {
+    marks,
+  })
 }
