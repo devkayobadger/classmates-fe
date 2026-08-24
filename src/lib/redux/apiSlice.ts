@@ -46,7 +46,7 @@ export const rootAPI = createApi({
     "Attendance",
     "Subject",
     "Student",
-    "Assessment",
+    "Assignment",
     "Report",
     "User",
     "Profile",

@@ -1,3 +1,4 @@
+import { useRef } from "react"
 import { ClipboardList } from "lucide-react"
 
 import {
@@ -9,42 +10,65 @@ import {
 } from "@/components/ui/table"
 
 import { MarksRow } from "./marks-row"
-import type { StudentMark } from "../redux/assessments.types"
+import type {
+  AssignmentCompletionStatus,
+  StudentMark,
+} from "../redux/assignments.types"
 
 interface MarksTableProps {
   students: StudentMark[]
-  totalMarks: number
-  onMarksChange?: (id: string, value: number | null) => void
+  onStatusChange?: (id: string, value: AssignmentCompletionStatus) => void
   editable?: boolean
 }
 
 export function MarksTable({
   students,
-  totalMarks,
-  onMarksChange,
+  onStatusChange,
   editable = true,
 }: MarksTableProps) {
+  const rowGroupRefs = useRef<(HTMLDivElement | null)[]>([])
+
   if (students.length === 0) return <EmptyState />
+
+  const handleNavigateVertical = (
+    currentIndex: number,
+    direction: "up" | "down"
+  ) => {
+    const nextIndex = direction === "down" ? currentIndex + 1 : currentIndex - 1
+    const targetGroup = rowGroupRefs.current[nextIndex]
+    if (!targetGroup) return
+
+    const activeButton = targetGroup.querySelector(
+      '[role="radio"][tabindex="0"]'
+    ) as HTMLButtonElement | null
+    ;(activeButton ?? targetGroup.querySelector("button"))?.focus()
+  }
 
   return (
     <div className="rounded-xl border">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
+            <TableHead className="w-10" />
             <TableHead>Student</TableHead>
-            <TableHead>Roll No.</TableHead>
-            <TableHead>Marks (/{totalMarks})</TableHead>
-            <TableHead>Grade</TableHead>
+            <TableHead>Student ID</TableHead>
+            <TableHead className="text-right">Submission status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {students.map((student) => (
+          {students.map((student, index) => (
             <MarksRow
               key={student.id}
+              index={index + 1}
               student={student}
-              totalMarks={totalMarks}
-              onMarksChange={onMarksChange}
+              onStatusChange={onStatusChange}
               editable={editable}
+              onNavigateVertical={(direction) =>
+                handleNavigateVertical(index, direction)
+              }
+              ref={(element) => {
+                rowGroupRefs.current[index] = element
+              }}
             />
           ))}
         </TableBody>
@@ -62,7 +86,7 @@ function EmptyState() {
       <div>
         <p className="font-medium">No students found</p>
         <p className="text-sm text-muted-foreground">
-          Add students to this subject to begin grading.
+          Add students to this subject to start tracking assignments.
         </p>
       </div>
     </div>

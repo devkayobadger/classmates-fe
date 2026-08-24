@@ -32,7 +32,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <p className="mt-8 text-xs text-muted-foreground">
-            © {year} Classmates · Trinity International College
+            © {year} Classmates. KayoBadger
           </p>
         </div>
       </div>

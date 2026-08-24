@@ -25,7 +25,7 @@ export function MarkInput({ value, max, onChange, editable }: MarkInputProps) {
     const parsed = Number(raw)
     if (Number.isNaN(parsed)) return
 
-    onChange?.(Math.max(0, Math.min(max, parsed)))
+    onChange?.(Math.max(0, Math.min(max, Math.trunc(parsed))))
   }
 
   const hasValue = value !== null
@@ -36,6 +36,7 @@ export function MarkInput({ value, max, onChange, editable }: MarkInputProps) {
         type="number"
         min={0}
         max={max}
+        step={1}
         value={value ?? ""}
         onChange={handleChange}
         disabled={!editable}

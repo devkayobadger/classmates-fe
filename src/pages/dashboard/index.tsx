@@ -19,7 +19,7 @@ export default function DashboardPage() {
         break
 
       case "enterMarks":
-        navigate("/assessments")
+        navigate("/assignments")
         break
 
       case "addStudent":

@@ -155,7 +155,7 @@ export function LoginForm() {
         {isSubmitting ? "Signing in…" : "Sign in"}
       </Button>
 
-      <div className="flex items-center gap-3 py-2">
+      {/*<div className="flex items-center gap-3 py-2">
         <Separator className="flex-1" />
         <span className="text-xs text-muted-foreground">or</span>
         <Separator className="flex-1" />
@@ -170,7 +170,7 @@ export function LoginForm() {
         <a href="#" className="font-medium text-primary hover:underline">
           Ask your department admin for access
         </a>
-      </p>
+      </p>*/}
     </form>
   )
 }
