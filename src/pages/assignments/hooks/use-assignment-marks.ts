@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react"
 
-import type { AssessmentsOverview } from "../redux/assessments.types"
-import { fetchAssessmentsOverview } from "../redux/assessments.api"
+import type { AssignmentMarksOverview } from "../redux/assignments.types"
+import { fetchAssignmentMarks } from "../redux/assignments.api"
 
-interface UseAssessmentsResult {
-  data: AssessmentsOverview | undefined
-  isLoading: boolean
-  error: unknown
-}
-
-export function useAssessments(): UseAssessmentsResult {
-  const [data, setData] = useState<AssessmentsOverview>()
+export function useAssignmentMarks(assignmentId: string) {
+  const [data, setData] = useState<AssignmentMarksOverview>()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<unknown>(null)
 
   useEffect(() => {
     let cancelled = false
 
-    fetchAssessmentsOverview()
+    fetchAssignmentMarks(assignmentId)
       .then((result) => {
         if (!cancelled) setData(result)
       })
@@ -31,7 +25,7 @@ export function useAssessments(): UseAssessmentsResult {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [assignmentId])
 
   return { data, isLoading, error }
 }

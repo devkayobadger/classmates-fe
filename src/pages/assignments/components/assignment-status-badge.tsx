@@ -1,11 +1,11 @@
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-import type { AssessmentStatus } from "../redux/assessments.types"
+import type { AssignmentStatus } from "../redux/assignments.types"
 
-const CONFIG: Record<AssessmentStatus, { label: string; className: string }> = {
-  "marks-entered": {
-    label: "Marks entered",
+const CONFIG: Record<AssignmentStatus, { label: string; className: string }> = {
+  "statuses-entered": {
+    label: "Statuses entered",
     className:
       "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50",
   },
@@ -20,15 +20,15 @@ const CONFIG: Record<AssessmentStatus, { label: string; className: string }> = {
   },
 }
 
-interface AssessmentStatusBadgeProps {
-  status: AssessmentStatus
+interface AssignmentStatusBadgeProps {
+  status: AssignmentStatus
   className?: string
 }
 
-export function AssessmentStatusBadge({
+export function AssignmentStatusBadge({
   status,
   className,
-}: AssessmentStatusBadgeProps) {
+}: AssignmentStatusBadgeProps) {
   const { label, className: toneClassName } = CONFIG[status]
 
   return (

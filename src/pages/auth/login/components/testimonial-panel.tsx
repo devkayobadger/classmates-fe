@@ -36,17 +36,17 @@ export function TestimonialPanel() {
             Why teachers switch
           </span>
           <blockquote className="py-2 text-xl leading-snug font-medium text-foreground sm:text-2xl">
-            “I used to spend the first ten minutes of every class calling names.
-            Now attendance is done before I&apos;ve opened my slides.”
+            “Classmates helps me understand my students beyond attendance - I see who needs
+            help, who is improving, and how I can guide them better.”
           </blockquote>
           <div className="flex items-center gap-3">
             <span
               className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold ${chipClasses.green}`}
             >
-              RD
+              IC
             </span>
             <div>
-              <p className="text-sm font-medium text-foreground">Rita Dahal</p>
+              <p className="text-sm font-medium text-foreground">Indra Chaudhary</p>
               <p className="text-sm text-muted-foreground">
                 Lecturer · BSc CSIT, Trinity
               </p>

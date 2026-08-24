@@ -46,10 +46,10 @@ export const NAV_ITEMS: NavItem[] = [
     icon: Users,
   },
   {
-    label: "Assessments",
-    href: "/assessments",
-    permission: "assessments:view",
-    breadcrumb: "Assessments",
+    label: "Assignments",
+    href: "/assignments",
+    permission: "assessment.read",
+    breadcrumb: "Assignments",
     icon: ClipboardList,
   },
   {

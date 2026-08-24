@@ -1,6 +1,6 @@
-import { Badge } from "@/components/ui/badge"
+/*import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import type { Grade } from "../redux/assessments.types"
+import type { Grade } from "../redux/assignments.types"
 
 const CONFIG: Record<Grade, string> = {
   "A+": "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50",
@@ -27,4 +27,4 @@ export function GradeBadge({ grade }: GradeBadgeProps) {
       {grade}
     </Badge>
   )
-}
+}*/

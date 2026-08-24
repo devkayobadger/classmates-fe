@@ -1,32 +1,32 @@
 import { cn } from "@/lib/utils"
 
-import type { AssessmentStatus } from "../redux/assessments.types"
+import type { AssignmentStatus } from "../redux/assignments.types"
 
-interface AssessmentProgressProps {
+interface AssignmentProgressProps {
   entered: number
   total: number
-  status: AssessmentStatus
+  status: AssignmentStatus
   className?: string
 }
 
-const BAR_COLOR: Record<AssessmentStatus, string> = {
-  "marks-entered": "bg-emerald-500",
+const BAR_COLOR: Record<AssignmentStatus, string> = {
+  "statuses-entered": "bg-emerald-500",
   "in-progress": "bg-amber-500",
   "not-started": "bg-muted-foreground/20",
 }
 
-export function AssessmentProgress({
+export function AssignmentProgress({
   entered,
   total,
   status,
   className,
-}: AssessmentProgressProps) {
+}: AssignmentProgressProps) {
   const percentage = total === 0 ? 0 : Math.round((entered / total) * 100)
 
   return (
     <div className={cn("w-36 shrink-0 text-right", className)}>
       <p className="flex justify-between text-sm">
-        <span className="text-muted-foreground">Entered</span>{" "}
+        <span className="text-muted-foreground">Updated</span>{" "}
         <span className="font-medium">
           {entered}/{total}
         </span>

@@ -10,10 +10,9 @@ import AttendanceSessionPage from "@/pages/attendance/[subjectId]"
 import Subjects from "@/pages/subjects"
 import Students from "@/pages/students"
 
-// Assessments
-import Assessments from "@/pages/assessments"
-import ViewAssesmentMarks from "@/pages/assessments/[id]"
-import EditAssessmentMarks from "@/pages/assessments/[id]/edit"
+// Assignments
+import Assignments from "@/pages/assignments"
+import AssignmentMarks from "@/pages/assignments/[id]/marks"
 
 //Exams
 import Exams from "@/pages/exams"
@@ -69,28 +68,20 @@ export const privateRoutes: AppRoute[] = [
     showInSidebar: true,
   },
 
-  // Assessments
+  // Assignments
   {
-    path: "/assessments",
-    element: Assessments,
+    path: "/assignments",
+    element: Assignments,
     permission: "assessment.read",
-    title: "Assessments",
+    title: "Assignments",
     showInSidebar: true,
   },
 
   {
-    path: "/assessments/:id",
-    element: ViewAssesmentMarks,
-    permission: "assessment.read",
-    title: "View Marks",
-    showInSidebar: false,
-  },
-
-  {
-    path: "/assessments/:id/edit",
-    element: EditAssessmentMarks,
+    path: "/assignments/:id/statuses",
+    element: AssignmentMarks,
     permission: "assessment.write",
-    title: "Enter Marks",
+    title: "Update Assignment Statuses",
     showInSidebar: false,
   },
 

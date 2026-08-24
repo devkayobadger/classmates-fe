@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
-import type { AvatarColor } from "../redux/assessments.types"
+import type { AvatarColor } from "../redux/assignments.types"
 
 const COLOR_CLASSES: Record<AvatarColor, string> = {
   violet: "bg-violet-100 text-violet-700",
@@ -27,8 +27,8 @@ interface StudentAvatarProps {
 
 export function StudentAvatar({ name, color, className }: StudentAvatarProps) {
   return (
-    <Avatar className={cn("h-9 w-9", className)}>
-      <AvatarFallback className={cn("font-medium", COLOR_CLASSES[color])}>
+    <Avatar className={cn("h-7 w-7", className)}>
+      <AvatarFallback className={cn("text-xs font-medium", COLOR_CLASSES[color])}>
         {getInitials(name)}
       </AvatarFallback>
     </Avatar>
